@@ -32,3 +32,18 @@ class Exponential(DistBase):
         uniform = self._unif.rvs(size)
         rn = -np.log(uniform + OFFSET)
         return rn
+    
+class Normal(DistBase):
+    def __init__(
+        self,
+        loc: Float_t = 0.0,
+        scale: Float_t = 1.0
+    ) -> None:
+        super().__init__(loc, scale)
+        self._unif = Uniform()
+    
+    def rvs(self,size: int) -> NDArray[Float_t]:
+        assert size > 0 and isinstance(size, int)
+        
+    def _box_muller(self,size: int) -> NDArray[Float_t]:
+        
