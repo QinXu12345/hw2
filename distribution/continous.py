@@ -13,7 +13,8 @@ class Uniform(DistBase):
         super().__init__(loc, scale)
             
     def rvs(self, size: int | None = None) -> NDArray[Float_t]:
-        assert size > 0 and isinstance(size, int)
+        if isinstance(size, int):
+            assert size > 0
         rn = np.array([self._rng.generate() for _ in range(size)])
         norm_rn = rn / self._norm
         return (norm_rn - self._loc) / self._scale
@@ -47,7 +48,7 @@ class Normal(DistBase):
         lower_tri = np.linalg.cholesky(self._scale)
         return lower_tri @ std_norm + self._loc
         
-    def _box_muller(self,size: int | None = None) -> NDArray[Float_t]:
+    def _box_muller(self,size: int) -> NDArray[Float_t]:
         uniform_rvs1 = self._unif.rvs(size)
         uniform_rvs2 = self._unif.rvs(size)
         std_norm = np.sqrt(-2 * np.log(uniform_rvs1)) * np.cos(2 * np.pi * uniform_rvs2)
