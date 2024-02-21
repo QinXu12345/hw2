@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 from ..generator import RandomGenBase
-from ..generator import LCGenerator
+from ..generator import Xnorgenerator, LCGenerator
 from ..typing import (
     NDArray,
     Float_t,
@@ -11,13 +11,16 @@ from ..typing import (
     PLATFORM,
     Uint_t
 )
-import numpy as np
+
+MEAN_TYPE = Float_t | NDArray[Float_t] | NDArray[Uint_t]
+
+COV_TYPE = Float_t | NDArray[Float_t] | NDArray[Uint_t]
 
 class DistBase(ABC):
     def __init__(
             self,
-            loc:Float_t = 0.0, 
-            scale:Float_t = 1.0
+            loc:MEAN_TYPE = 0.0, 
+            scale:MEAN_TYPE = 1.0
         ) -> None:
         super().__init__()
         self._rng = LCGenerator()
@@ -40,7 +43,7 @@ class DistBase(ABC):
         return self._rng.set_seed(seed)
         
     @abstractmethod
-    def rvs(self, size: int) -> NDArray[Float_t]:
+    def rvs(self, size: int | None = None) -> NDArray[Float_t]:
         ...
         
     

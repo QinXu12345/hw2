@@ -1,2 +1,2 @@
-from .distribution import Uniform,Exponential,ks_distance
+from .distribution import Uniform,Exponential,Normal,ks_distance
 from .generator import Xnorgenerator,LCGenerator
