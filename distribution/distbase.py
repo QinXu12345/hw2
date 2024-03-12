@@ -46,4 +46,8 @@ class DistBase(ABC):
     def rvs(self, size: int | None = None) -> NDArray[Float_t]:
         ...
         
+    @abstractmethod
+    def var() -> Float_t:
+        ...
+        
     

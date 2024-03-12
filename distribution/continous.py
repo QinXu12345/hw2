@@ -17,7 +17,10 @@ class Uniform(DistBase):
             assert size > 0
         rn = np.array([self._rng.generate() for _ in range(size)])
         norm_rn = rn / self._norm
-        return (norm_rn - self._loc) / self._scale
+        return 1 - (norm_rn - self._loc) / self._scale
+    
+    def var(self) -> Float_t:
+        return 1/12 * (1 + self._loc)
     
 class Exponential(DistBase):
     def __init__(
@@ -31,9 +34,11 @@ class Exponential(DistBase):
     def rvs(self, size: int | None = None) -> NDArray[Float_t]:
         assert size > 0 and isinstance(size, int)
         uniform = self._unif.rvs(size)
-        rn = -np.log(uniform + OFFSET)
+        rn = np.log(uniform)
         return rn
     
+    def var(self) -> Float_t:
+        pass
 class Normal(DistBase):
     def __init__(
         self,
@@ -47,6 +52,9 @@ class Normal(DistBase):
         std_norm = self._box_muller(self._scale.shape[0])
         lower_tri = np.linalg.cholesky(self._scale)
         return lower_tri @ std_norm + self._loc
+    
+    def var() -> Float_t:
+        pass
         
     def _box_muller(self,size: int) -> NDArray[Float_t]:
         uniform_rvs1 = self._unif.rvs(size)
